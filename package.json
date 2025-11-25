@@ -1,0 +1,50 @@
+{
+    "name": "ludo-web-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build:server": "tsc",
+        "build:client": "vite build",
+        "build": "npm run build:client && npm run build:server",
+        "start": "node dist/server.js",
+        "dev:server": "tsx watch src/server/server.ts",
+        "dev:client": "vite",
+        "dev": "concurrently \"npm:dev:*\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "dependencies": {
+        "@countrystatecity/countries": "^1.0.4",
+        "bcrypt": "^6.0.0",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.2",
+        "cors": "^2.8.5",
+        "express": "^5.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "mongodb": "^7.0.0",
+        "mongoose": "^8.19.3",
+        "three": "^0.181.1",
+        "ws": "^8.18.3"
+    },
+    "devDependencies": {
+        "@sveltejs/adapter-auto": "^7.0.0",
+        "@sveltejs/vite-plugin-svelte": "^6.2.1",
+        "@types/bcrypt": "^6.0.0",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.5",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/node": "^24.10.1",
+        "@types/three": "^0.181.0",
+        "@types/ws": "^8.18.1",
+        "concurrently": "^9.2.1",
+        "nodemon": "^3.1.11",
+        "svelte": "^5.43.6",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.20.6",
+        "typescript": "^5.9.3",
+        "vite": "^7.2.2"
+    }
+}
