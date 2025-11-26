@@ -8,6 +8,7 @@ import type { JwtPayload } from "../common/models/model.ts";
  * Associar o nome de usuário ao socket
  */
 interface GameSocket extends WebSocket {
+    peerId?: string
     username?: string
 }
 
@@ -47,6 +48,21 @@ class Manager {
                     if (storedSocket === ws) {
                         this.sockets.delete(ws.username)
                     }
+                }
+
+                if (ws.peerId) {
+                    const players = this.game.players
+                        .filter(p => p.controller === PlayerController.HUMAN)
+                    const peerIds = players
+                        .map(p => this.sockets.get(p.username)?.peerId)
+                        .filter(p => p !== undefined)
+
+                    console.log(peerIds)
+
+                    this.broadcast({
+                        type: MessageType.VIDEO_SYNC,
+                        content: peerIds
+                    } as Message)
                 }
             })
 
@@ -103,7 +119,7 @@ class Manager {
         }
     }
 
-    private async handleMessage(ws: WebSocket, message: Message, username: string) {
+    private async handleMessage(ws: GameSocket, message: Message, username: string) {
         switch (message.type) {
             case MessageType.GREET:
                 this.handleGreet(username);
@@ -117,6 +133,26 @@ class Manager {
             case MessageType.COMMAND:
                 await this.handleCommand(message.content as Command, username);
                 break;
+            case MessageType.VIDEO_READY:
+                this.handleConnectVideo(ws, message.content as string, username)
+        }
+    }
+
+    private handleConnectVideo(socket: GameSocket, peerId: string, username: string) {
+        const players = this.game.players.filter(p => p.controller === PlayerController.HUMAN)
+        const isUserPlayer = players.find(p => p.username === username) !== undefined
+
+        if (isUserPlayer) {
+            socket.peerId = peerId
+
+            const peerIds = players
+                .map(p => this.sockets.get(p.username)?.peerId)
+                .filter(p => p !== undefined)
+
+            this.broadcastPlayers({
+                type: MessageType.VIDEO_SYNC,
+                content: peerIds
+            })
         }
     }
 
@@ -361,9 +397,15 @@ class Manager {
         }
     }
 
-    private broadcast(message: Message) {
+    private broadcast(message: Message, except?: WebSocket) {
         const payload = JSON.stringify(message);
         this.server.clients.forEach(client => {
+            if (except && client === except) {
+                console.log("skipping...")
+                return
+            }
+
+
             if (client.readyState === WebSocket.OPEN) {
                 client.send(payload);
             }
@@ -391,6 +433,16 @@ class Manager {
     }
 
     private createFullSyncMessage(playersOnly = false): Message {
+        let peerIds: string[] = []
+        if (playersOnly) {
+            const playerNames = this.game.players
+                .filter(p => p.controller === PlayerController.HUMAN)
+                .map(p => p.username)
+            peerIds = playerNames
+                .map(p => this.sockets.get(p)?.peerId)
+                .filter(p => p !== undefined)
+        }
+
         return {
             type: MessageType.FULL_SYNC,
             content: {
@@ -401,6 +453,7 @@ class Manager {
                 },
                 queue: this.queue,
                 spectators: Array.from(this.spectators),
+                peers: playersOnly ? peerIds : [],
                 players: this.game.players.map(player => ({
                     username: player.username,
                     color: player.color,

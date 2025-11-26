@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import type { JwtPayload } from '../common/models/model.ts';
 import { createUser, getUsers, loginUser } from './database.ts';
 import { Manager } from './manager.ts';
+import { PeerServer } from 'peer';
 
 const app = express();
 
@@ -94,3 +95,13 @@ app.listen(PORT, () => {
 });
 
 new Manager();
+
+const peerServer = PeerServer({
+    port: 9000,
+    path: "/ludo",
+    allow_discovery: true
+});
+
+peerServer.on('connection', (client) => {
+    console.log(`[peer] client connected: ${client.getId()}`);
+});

@@ -15,6 +15,7 @@
     import { tokenStore, userStore } from "$lib/auth.svelte.ts";
     import { goto } from "$app/navigation";
     import { GameState } from "../../../common/models/game.ts";
+    import Webcam from "../Webcam.svelte";
 
     let renderer: Renderer;
     let container: HTMLDivElement;
@@ -80,10 +81,11 @@
     <div class="container" bind:this={container}>
         <canvas bind:this={canvas}></canvas>
 
-        <p style="color: {display.color}">{display.message}</p>
+        <p style="background-color: {display.color}">{display.message}</p>
+    
+        <Dice />
+        <Webcam />
     </div>
-
-    <Dice />
 
     <Tabs />
 </main>
@@ -98,12 +100,14 @@
 
     p {
         color: white;
+        background-color: black;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
         position: absolute;
         font-size: 1.5rem;
-        text-decoration: underline;
         font-weight: bold;
-        top: 16px;
-        left: 16px;
+        bottom: 16px;
+        right: 16px;
         user-select: none;
     }
 

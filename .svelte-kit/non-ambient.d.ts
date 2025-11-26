@@ -27,7 +27,7 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/game" | "/login" | "/register";
+		RouteId(): "/" | "/game" | "/login" | "/register" | "/tree";
 		RouteParams(): {
 			
 		};
@@ -35,10 +35,11 @@ declare module "$app/types" {
 			"/": Record<string, never>;
 			"/game": Record<string, never>;
 			"/login": Record<string, never>;
-			"/register": Record<string, never>
+			"/register": Record<string, never>;
+			"/tree": Record<string, never>
 		};
-		Pathname(): "/" | "/game" | "/game/" | "/login" | "/login/" | "/register" | "/register/";
+		Pathname(): "/" | "/game" | "/game/" | "/login" | "/login/" | "/register" | "/register/" | "/tree" | "/tree/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/avatar.png" | string & {};
+		Asset(): "/avatar.png" | "/logo.png" | "/screenshot.png" | string & {};
 	}
 }

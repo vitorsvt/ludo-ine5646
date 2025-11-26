@@ -4,7 +4,8 @@ import { CommandType, MessageType, type Chat, type Command, type FullSync, type 
 import { messages } from "./chat.svelte.ts";
 import { players } from "$lib/game.svelte.ts";
 import { clearAuth, tokenStore } from "$lib/auth.svelte.ts";
-import { goto } from '$app/navigation'
+import { goto } from '$app/navigation';
+import { video } from "./Webcam.svelte.ts";
 
 let socket = $state<WebSocket | null>(null);
 
@@ -85,7 +86,11 @@ function connect() {
                 setCurrentPlayer(content.state.currentPlayer)
                 setGameState(content.state.state)
                 setResync(true);
+                video.sync(content.peers)
                 break;
+            case MessageType.VIDEO_SYNC:
+                video.sync(message.content as string[])
+                break
             case MessageType.COMMAND:
                 const { command, data } = message.content as Command
 

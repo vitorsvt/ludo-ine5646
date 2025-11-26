@@ -1,4 +1,4 @@
-import { Color, GameState, type Player } from "../../common/models/game.ts"
+import { Color, GameState, PlayerController, type Player } from "../../common/models/game.ts"
 import { Game } from "../../common/models/game.ts";
 import type { ChoosePiece } from "../../common/models/message.ts";
 
@@ -46,6 +46,14 @@ export let players = $state({
     active: [] as Player[],
     queue: [] as string[],
     spectators: [] as string[],
+
+    humans() {
+        return this.active.filter(p => p.controller === PlayerController.HUMAN)
+    },
+
+    isPlaying(player: string) {
+        return this.humans().map(p => p.username).includes(player)
+    }
 })
 
 export function syncPlayers(p: Player[]) {

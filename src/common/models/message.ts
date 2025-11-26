@@ -12,7 +12,9 @@ export const enum MessageType {
     STATE_SYNC = "state_sync",
     CHOOSE_PIECE = "choose_piece",
     GREET = "greet",
-    FILL_BOTS = "fill_bots"
+    FILL_BOTS = "fill_bots",
+    VIDEO_READY = "video_ready",
+    VIDEO_SYNC = "video_sync",
 }
 
 /**
@@ -21,7 +23,7 @@ export const enum MessageType {
 export interface Message {
     type: MessageType,
     token?: string,
-    content?: Chat | Player | PieceSync | StateSync | FullSync | Command | ChoosePiece | string
+    content?: Chat | Player | PieceSync | StateSync | FullSync | Command | ChoosePiece | string | string[]
 }
 
 export interface Chat {
@@ -52,6 +54,7 @@ export interface FullSync {
     pieces: PieceSync[],
     globalChat: Chat[],
     matchChat: Chat[],
+    peers: string[]
 }
 
 export const enum CommandType {

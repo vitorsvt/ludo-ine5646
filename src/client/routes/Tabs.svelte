@@ -22,10 +22,6 @@
             label: "Ajustes",
             component: Options,
         },
-        {
-            label: "Logs",
-            component: Options,
-        },
     ];
 
     let activeTabValue = 0;
