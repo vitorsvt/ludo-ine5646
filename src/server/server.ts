@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { JwtPayload } from '../common/models/model.ts';
-import { createUser, getUsers, loginUser } from './database.ts';
+import { createUser, getLatestMatchId, getUserByName, getUsers, loginUser } from './database.ts';
 import { Manager } from './manager.ts';
 import { PeerServer } from 'peer';
 
@@ -83,8 +83,17 @@ app.post('/api/login', async (req: Request, res: Response) => {
     }
 });
 
-app.get('/api/authenticated', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
-    res.status(201).json({ message: "Authorized" })
+app.get('/api/user', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+    if (req.user !== undefined) {
+        try {
+            const user = await getUserByName(req.user.username)
+            res.status(200).json(user)
+        } catch (err) {
+            res.status(401).json({ message: "User not found" })
+        }
+    } else {
+        res.status(401).json({ message: "Unauthorized" })
+    }
 })
 
 const publicPath = path.join(dirname, '../public');
@@ -94,7 +103,9 @@ app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
 
-new Manager();
+const matchId = await getLatestMatchId()
+
+new Manager({ nextId: matchId + 1, port: 3001 });
 
 const peerServer = PeerServer({
     port: 9000,

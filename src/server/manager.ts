@@ -5,6 +5,7 @@ import { CommandType, MessageType, type Chat, type ChoosePiece, type Command, ty
 import type { JwtPayload } from "../common/models/model.ts";
 import path from 'path';
 import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
+import { getLatestMatchId, saveVideo } from './database.ts';
 
 /**
  * Associar o nome de usuário ao socket
@@ -18,6 +19,7 @@ interface GameSocket extends WebSocket {
  * Inicialização do gerenciador
  */
 interface ManagerInit {
+    nextId: number,
     port: number
 }
 
@@ -36,8 +38,10 @@ class Manager {
     spectators: string[] = [];
     recordings = new Map<string, ChildProcessWithoutNullStreams>();
 
-    constructor({ port }: ManagerInit = { port: 3001 }) {
+    constructor({ nextId, port }: ManagerInit) {
         this.game = new Game();
+        this.game.id = nextId + 1
+
         this.server = new WebSocketServer({ port });
         console.log(`[server] Websocket rodando em ws://localhost:${port}`)
 
@@ -183,6 +187,9 @@ class Manager {
         ffmpeg.on('error', (err) => {
             console.error(`[ffmpeg ${username}] falha ao iniciar processo:`, err);
         });
+
+        // Salva o caminho da gravação no BD
+        saveVideo(username, this.game.id, filePath)
 
         // Salva o processo da gravação no mapping
         this.recordings.set(username, ffmpeg)

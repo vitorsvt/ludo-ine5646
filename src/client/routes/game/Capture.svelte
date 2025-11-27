@@ -1,8 +1,15 @@
 <script lang="ts">
     import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
     import { players } from "$lib/Game.svelte.ts";
-    import { MessageType, type Message } from "../../../common/models/message.ts";
+    import {
+        MessageType,
+        type Message,
+    } from "../../../common/models/message.ts";
     import { send } from "$lib/Socket.svelte.ts";
+    import type { SavedVideo, User } from "../../../common/models/model.ts";
+    import { onMount } from "svelte";
+
+    let videos = $state<SavedVideo[]>([]);
 
     let mediaRecorder = $state<MediaRecorder>();
     let isRecording = $state(false);
@@ -69,14 +76,33 @@
                 t.stop();
             });
         }
+        syncVideos();
         mediaRecorder = undefined;
         isRecording = false;
+    }
+
+    async function syncVideos() {
+        const response = (await fetch("/api/user", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${$tokenStore}`,
+            },
+        })) as any;
+
+        const data = await response.json() as User
+
+        videos = data.videos;
     }
 
     $effect(() => {
         if (!players.isPlaying($userStore)) {
             stopRecording();
         }
+    });
+
+    onMount(() => {
+        syncVideos();
     });
 </script>
 
@@ -88,6 +114,12 @@
             <button onclick={startRecording}>Iniciar gravação</button>
         {/if}
     {/if}
+
+    {#each videos as video}
+        <ul>
+            <li><a href={video.location}>Partida {video.matchId}</a></li>
+        </ul>
+    {/each}
 </section>
 
 <style>

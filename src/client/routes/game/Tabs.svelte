@@ -2,7 +2,7 @@
     import Chat from "./Chat.svelte";
     import Players from "./Queue.svelte";
     import { userStore } from "$lib/Auth.svelte.ts";
-    import Options from "./Options.svelte";
+    import Options from "./Capture.svelte";
 
     interface Tab {
         label: string;
@@ -19,7 +19,7 @@
             component: Chat,
         },
         {
-            label: "Ajustes",
+            label: "Gravação",
             component: Options,
         },
     ];

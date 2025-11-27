@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
-import { IsNotEmpty, Length, validateOrReject } from "class-validator";
-import type { User } from '../common/models/model.ts';
+import { IsNotEmpty, Length, NotEquals, validateOrReject } from "class-validator";
+import type { Match, User } from '../common/models/model.ts';
 import { plainToInstance } from 'class-transformer';
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -21,6 +21,42 @@ clientPromise = client.connect();
 export async function getDatabase() {
     const client = await clientPromise;
     return client.db('ludo');
+}
+
+export async function saveVideo(username: string, matchId: number, location: string) {
+    const db = await getDatabase()
+
+    const result = await db.collection<User>('users').updateOne({ username }, {
+        $push: {
+            videos: {
+                matchId,
+                location
+            }
+        }
+    })
+
+    return result
+}
+
+export async function getLatestMatchId() {
+    const db = await getDatabase()
+    const match = await db.collection<Match>('matches')
+        .find({})
+        .sort({ id: -1 })
+        .limit(1)
+        .toArray();
+    
+    if (match.length > 0) {
+        return match[0]!.id
+    }
+
+    return 0
+}
+
+export async function getMatches() {
+    const db = await getDatabase()
+    const matches = await db.collection<Match>('matches').find({}).toArray()
+    return matches
 }
 
 export async function getUsers() {
@@ -71,7 +107,7 @@ export async function loginUser(plainCredentials: object) {
     const token = jwt.sign(
         { id: user._id, username: user.username },
         "INE5646",
-        { expiresIn: '2h' }
+        { expiresIn: '6h' }
     )
 
     return token
@@ -80,6 +116,7 @@ export async function loginUser(plainCredentials: object) {
 export class CreateUser {
     @IsNotEmpty()
     @Length(3, 20)
+    @NotEquals("BOT")
     username: string;
 
     @IsNotEmpty()
@@ -136,6 +173,8 @@ export async function createUser(plainUser: User) {
         city: createUser.city,
         password: hashedPassword,
         image: undefined,
+        videos: [],
+        score: 0
     })
 
     return result
