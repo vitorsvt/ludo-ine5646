@@ -24,28 +24,35 @@
     let display = $derived.by(() => {
         const currentPlayer = getCurrentPlayer();
 
-        switch (getGameState()) {
-            case GameState.LOBBY:
-                return {
-                    color: "black",
-                    message: `aguardando jogadores... (${players.queue.length}/4)`,
-                };
-            case GameState.DICE:
-                return {
-                    color: currentPlayer?.color || "black",
-                    message: `[${currentPlayer?.username}] rolar o dado`,
-                };
-            case GameState.PIECE:
-                return {
-                    color: currentPlayer?.color || "black",
-                    message: `[${currentPlayer?.username}] selecione uma peça`,
-                };
-            case GameState.END:
-                return {
-                    color: "black",
-                    message: `fim de jogo`,
-                };
+        if (currentPlayer) {
+            switch (getGameState()) {
+                case GameState.LOBBY:
+                    return {
+                        color: "black",
+                        message: `aguardando jogadores... (${players.queue.length}/4)`,
+                    };
+                case GameState.DICE:
+                    return {
+                        color: currentPlayer?.color || "black",
+                        message: `[${currentPlayer?.username}] rolar o dado`,
+                    };
+                case GameState.PIECE:
+                    return {
+                        color: currentPlayer?.color || "black",
+                        message: `[${currentPlayer?.username}] selecione uma peça`,
+                    };
+                case GameState.END:
+                    return {
+                        color: "black",
+                        message: `fim de jogo`,
+                    };
+            }
         }
+
+        return {
+            color: "black",
+            message: "carregando...",
+        };
     });
 
     $effect(() => {
@@ -104,7 +111,7 @@
         border-radius: 0.5rem;
         padding: 0.5rem;
         position: absolute;
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: bold;
         bottom: 16px;
         right: 16px;

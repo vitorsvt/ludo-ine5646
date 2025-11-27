@@ -35,6 +35,7 @@
         <ul>
             <li><a href="/profile">{$userStore}</a></li>
             <li><a href="/ranking">Ranking</a></li>
+            <li><a href="/">Início</a></li>
         </ul>
     </nav>
 
@@ -59,8 +60,8 @@
     aside {
         width: 50%;
         height: 100vh;
-        padding: 0.5rem;
-        
+        padding: 1rem;
+
         display: flex;
         flex-direction: column;
     }
@@ -72,14 +73,18 @@
         align-items: center;
         justify-content: space-between;
         padding-bottom: 1rem;
-    }
 
-    nav > ul {
-        display: flex;
-        flex-direction: row-reverse;
-        gap: 1rem;
-        align-items: center;
-        justify-content: right;
+        span, li {
+            font-weight: bold;
+        }
+
+        > ul {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 1rem;
+            align-items: center;
+            justify-content: right;
+        }
     }
 
     div {
