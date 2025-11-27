@@ -1,11 +1,10 @@
-import { choosePiece, game, setCurrentPlayer, setDice, setGameState, setResync, syncPlayers } from "$lib/game.svelte.ts";
+import { goto } from '$app/navigation';
+import { clearAuth, tokenStore } from "$lib/Auth.svelte.ts";
+import { choosePiece, game, players, setCurrentPlayer, setDice, setGameState, setResync, syncPlayers } from "$lib/Game.svelte.ts";
+import { video } from "$lib/Webcam.svelte.ts";
 import { get } from "svelte/store";
 import { CommandType, MessageType, type Chat, type Command, type FullSync, type Message, type PieceSync, type StateSync } from "../../common/models/message.ts";
-import { messages } from "./chat.svelte.ts";
-import { players } from "$lib/game.svelte.ts";
-import { clearAuth, tokenStore } from "$lib/auth.svelte.ts";
-import { goto } from '$app/navigation';
-import { video } from "./Webcam.svelte.ts";
+import { messages } from "./Chat.svelte.ts";
 
 let socket = $state<WebSocket | null>(null);
 

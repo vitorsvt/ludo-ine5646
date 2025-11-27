@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { tokenStore, userStore } from "$lib/auth.svelte.ts";
+    import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
     import {
         getCurrentPlayer,
         getDice,
         getGameState,
         setDice,
-    } from "$lib/game.svelte.ts";
-    import { GameState } from "../../common/models/game.ts";
-    import { CommandType, MessageType } from "../../common/models/message.ts";
-    import { send } from "./socket.svelte.ts";
+    } from "$lib/Game.svelte.ts";
+    import { GameState } from "../../../common/models/game.ts";
+    import { CommandType, MessageType } from "../../../common/models/message.ts";
+    import { send } from "$lib/Socket.svelte.ts";
 
     let button = $state<HTMLButtonElement>();
 

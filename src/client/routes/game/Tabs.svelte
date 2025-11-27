@@ -1,7 +1,7 @@
 <script lang="ts">
     import Chat from "./Chat.svelte";
     import Players from "./Queue.svelte";
-    import { userStore } from "$lib/auth.svelte.ts";
+    import { userStore } from "$lib/Auth.svelte.ts";
     import Options from "./Options.svelte";
 
     interface Tab {

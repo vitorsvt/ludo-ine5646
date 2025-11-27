@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { tokenStore, userStore } from "$lib/auth.svelte.ts";
+    import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
     import {
         CommandType,
         MessageType,
         type Command,
         type Message,
-    } from "../../common/models/message.ts";
-    import { getGameState, players } from "$lib/game.svelte.ts";
-    import { send } from "./socket.svelte.ts";
-    import { GameState, PlayerController } from "../../common/models/game.ts";
+    } from "../../../common/models/message.ts";
+    import { getGameState, players } from "$lib/Game.svelte.ts";
+    import { send } from "$lib/Socket.svelte.ts";
+    import { GameState, PlayerController } from "../../../common/models/game.ts";
 
     let enqueued = $derived(
         players.queue.includes($userStore === null ? "" : $userStore),

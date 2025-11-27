@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Renderer } from "$lib/render.svelte.ts";
+    import { Renderer } from "$lib/Render.svelte.ts";
     import { onMount } from "svelte";
-    import { connect } from "../socket.svelte.ts";
-    import Dice from "../Dice.svelte";
+    import { connect } from "$lib/Socket.svelte.ts";
+    import Dice from "./Dice.svelte";
     import {
         game,
         getCurrentPlayer,
@@ -10,19 +10,19 @@
         getResync,
         players,
         setResync,
-    } from "$lib/game.svelte.ts";
-    import Tabs from "../Tabs.svelte";
-    import { tokenStore, userStore } from "$lib/auth.svelte.ts";
+    } from "$lib/Game.svelte.ts";
+    import Tabs from "./Tabs.svelte";
+    import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
     import { goto } from "$app/navigation";
     import { GameState } from "../../../common/models/game.ts";
-    import Webcam from "../Webcam.svelte";
+    import Webcam from "./Webcam.svelte";
 
     let renderer: Renderer;
     let container: HTMLDivElement;
     let canvas: HTMLCanvasElement;
 
     let display = $derived.by(() => {
-        const currentPlayer = getCurrentPlayer()
+        const currentPlayer = getCurrentPlayer();
 
         switch (getGameState()) {
             case GameState.LOBBY:
@@ -32,12 +32,12 @@
                 };
             case GameState.DICE:
                 return {
-                    color: currentPlayer?.color || 'black',
+                    color: currentPlayer?.color || "black",
                     message: `[${currentPlayer?.username}] rolar o dado`,
                 };
             case GameState.PIECE:
                 return {
-                    color: currentPlayer?.color || 'black',
+                    color: currentPlayer?.color || "black",
                     message: `[${currentPlayer?.username}] selecione uma peça`,
                 };
             case GameState.END:
@@ -82,7 +82,7 @@
         <canvas bind:this={canvas}></canvas>
 
         <p style="background-color: {display.color}">{display.message}</p>
-    
+
         <Dice />
         <Webcam />
     </div>

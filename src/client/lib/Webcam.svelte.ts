@@ -1,7 +1,7 @@
+import { tokenStore } from "$lib/Auth.svelte.ts";
+import { send } from "$lib/Socket.svelte.ts";
 import Peer from "peerjs";
 import { get } from "svelte/store";
-import { tokenStore } from "$lib/auth.svelte"; // Ajuste o import conforme seu projeto
-import { send } from "./socket.svelte"; // Ajuste o import conforme seu projeto
 import { MessageType } from "../../common/models/message.ts";
 
 export interface VideoStream {

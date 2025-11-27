@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { tokenStore, userStore } from "$lib/auth.svelte.ts";
-    import { players } from "$lib/game.svelte.ts";
-    import { MessageType, type Message } from "../../common/models/message.ts";
-    import { send } from "./socket.svelte.ts";
+    import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
+    import { players } from "$lib/Game.svelte.ts";
+    import { MessageType, type Message } from "../../../common/models/message.ts";
+    import { send } from "$lib/Socket.svelte.ts";
 
     let mediaRecorder = $state<MediaRecorder>();
     let isRecording = $state(false);

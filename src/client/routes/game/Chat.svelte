@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { tokenStore, userStore } from "$lib/auth.svelte.ts";
-    import { players } from "$lib/game.svelte.ts";
-    import { MessageType, type Message } from "../../common/models/message.ts";
-    import { messages } from "./chat.svelte.ts";
-    import { send } from "./socket.svelte.ts";
+    import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
+    import { players } from "$lib/Game.svelte.ts";
+    import { MessageType, type Message } from "../../../common/models/message.ts";
+    import { messages } from "$lib/Chat.svelte.ts";
+    import { send } from "$lib/Socket.svelte.ts";
 
     let globalChatValue = $state("");
     let matchChatValue = $state("");

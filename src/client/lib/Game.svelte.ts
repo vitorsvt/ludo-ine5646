@@ -1,4 +1,4 @@
-import { Color, GameState, PlayerController, type Player } from "../../common/models/game.ts"
+import { GameState, PlayerController, type Player } from "../../common/models/game.ts"
 import { Game } from "../../common/models/game.ts";
 import type { ChoosePiece } from "../../common/models/message.ts";
 

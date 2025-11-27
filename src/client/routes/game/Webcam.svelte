@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { video } from "./Webcam.svelte.ts";
-    import { players } from "$lib/game.svelte.ts";
-    import { userStore } from "$lib/auth.svelte.ts";
+    import { video } from "$lib/Webcam.svelte.ts";
+    import { players } from "$lib/Game.svelte.ts";
+    import { userStore } from "$lib/Auth.svelte.ts";
 
     $effect(() => {
         if (!video.localStream && $userStore && players.isPlaying($userStore)) {

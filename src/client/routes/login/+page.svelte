@@ -1,6 +1,6 @@
 <script lang="ts">
     import { goto } from '$app/navigation'
-    import { saveAuth } from '$lib/auth.svelte.ts';
+    import { saveAuth } from '$lib/Auth.svelte.ts';
 
     const credentials = {
         username: "",

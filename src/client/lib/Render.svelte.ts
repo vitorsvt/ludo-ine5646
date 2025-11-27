@@ -1,10 +1,10 @@
-import * as THREE from 'three'
-import { Color, Game, Tile, type Piece } from '../../common/models/game.ts';
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { send } from '../routes/socket.svelte.ts';
-import { CommandType, MessageType, type ChoosePiece } from '../../common/models/message.ts';
+import { tokenStore } from '$lib/Auth.svelte.ts';
+import { send } from '$lib/Socket.svelte.ts';
 import { get } from 'svelte/store';
-import { tokenStore } from './auth.svelte.ts';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import { Color, Game, Tile, type Piece } from '../../common/models/game.ts';
+import { CommandType, MessageType, type ChoosePiece } from '../../common/models/message.ts';
 
 interface RendererState {
     scene: THREE.Scene,
@@ -216,4 +216,4 @@ class Renderer {
     }
 }
 
-export { Renderer }
+export { Renderer };
