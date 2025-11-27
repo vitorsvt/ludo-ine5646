@@ -364,6 +364,8 @@ class Game {
         const waitingPieces = this.board.pieces.filter(p => p.state === PieceState.WAITING)
         const colorWaitingPieces = waitingPieces.filter(p => p.color === color)
 
+        this.state = GameState.PIECE;
+
         let chanceOfSix = 1 / 6
         const maxBoost = 2 / 6 // Ajuda máxima de +0.333... (todos os outros com peças fora)
         if (colorWaitingPieces.length === 4) {
@@ -378,6 +380,8 @@ class Game {
             // Tentar os demais números
             this.dice = Math.ceil(Math.random() * 5);
         }
+
+        this.dice += 3
 
         this.state = GameState.PIECE;
     }

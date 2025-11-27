@@ -5,7 +5,8 @@ import { CommandType, MessageType, type Chat, type ChoosePiece, type Command, ty
 import type { JwtPayload } from "../common/models/model.ts";
 import path from 'path';
 import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
-import { getLatestMatchId, saveVideo } from './database.ts';
+import { saveVideo } from './database.ts';
+import { thickness } from 'three/tsl';
 
 /**
  * Associar o nome de usuário ao socket
@@ -37,6 +38,7 @@ class Manager {
     queue: string[] = [];
     spectators: string[] = [];
     recordings = new Map<string, ChildProcessWithoutNullStreams>();
+    turnTimer: NodeJS.Timeout | null = null
 
     constructor({ nextId, port }: ManagerInit) {
         this.game = new Game();
@@ -145,7 +147,7 @@ class Manager {
                 this.handleFillBots(username)
                 break
             case MessageType.COMMAND:
-                await this.handleCommand(message.content as Command, username)
+                await this.handleCommand(ws, message.content as Command, username)
                 break
             case MessageType.VIDEO_READY:
                 this.handleConnectVideo(ws, message.content as string, username)
@@ -287,10 +289,11 @@ class Manager {
         }
     }
 
-    private async handleCommand(command: Command, username: string) {
+    private async handleCommand(ws: GameSocket, command: Command, username: string) {
         switch (command.command) {
             case CommandType.ROLL_DICE:
                 if (this.game.state !== GameState.DICE || this.game.currentPlayer?.username !== username) return;
+                this.stopTurnTimer()
 
                 this.game.dice = 0;
                 this.broadcastState();
@@ -317,6 +320,7 @@ class Manager {
                     return;
                 }
 
+                this.stopTurnTimer()
                 this.game.choosePiece(piece);
 
                 this.broadcast({
@@ -333,6 +337,25 @@ class Manager {
                 break;
 
             case CommandType.ENQUEUE:
+                // Entrar durante o andamento da partida
+                if (this.game.state !== GameState.LOBBY) {
+                    const botPlayer = this.game.players.find(p => p.controller === PlayerController.AI);
+                    if (botPlayer) {
+                        botPlayer.controller = PlayerController.HUMAN;
+                        botPlayer.username = username;
+
+                        this.spectators = this.spectators.filter(s => s !== username);
+                        this.sockets.set(username, ws);
+
+                        this.broadcast(this.createFullSyncMessage());
+
+                        if (this.game.currentPlayer === botPlayer) {
+                            this.startTurnTimer();
+                        }
+                        return;
+                    }
+                }
+
                 if (!this.queue.includes(username)) {
                     this.queue.push(username);
                     this.spectators = this.spectators.filter(n => n !== username);
@@ -364,6 +387,7 @@ class Manager {
         const finished = this.game.checkEnd()
 
         if (finished) {
+            this.stopTurnTimer()
             this.broadcastState()
 
             await delay(2500)
@@ -449,11 +473,59 @@ class Manager {
 
         if (this.game.botTurn()) {
             await this.executeBotTurn();
+        } else {
+            this.startTurnTimer()
+        }
+    }
+
+    private startTurnTimer() {
+        this.stopTurnTimer();
+        const currentPlayer = this.game.currentPlayer;
+
+        if (currentPlayer && currentPlayer.controller === PlayerController.HUMAN) {
+            this.turnTimer = setTimeout(() => {
+                this.handleInactivity(currentPlayer.username);
+            }, 30000);
+        }
+    }
+
+    private stopTurnTimer() {
+        if (this.turnTimer) {
+            clearTimeout(this.turnTimer);
+            this.turnTimer = null;
+        }
+    }
+
+    private handleInactivity(username: string) {
+        const player = this.game.players.find(p => p.username === username);
+        if (!player) return;
+
+        this.spectators.push(username);
+
+        // Tentar adicionar o próximo da fila
+        const nextInQueue = this.queue.shift();
+
+        if (nextInQueue) {
+            player.username = nextInQueue;
+            player.controller = PlayerController.HUMAN;
+            const socket = this.sockets.get(nextInQueue);
+            if (socket) this.startTurnTimer();
+        } else {
+            player.username = "BOT";
+            player.controller = PlayerController.AI;
+        }
+
+        this.broadcast(this.createFullSyncMessage());
+
+        if (player.controller === PlayerController.AI) {
+            this.executeBotTurn();
         }
     }
 
     private async executeBotTurn() {
         console.log("Bot turn starting...");
+
+        if (!this.game.currentPlayer || this.game.currentPlayer.controller !== PlayerController.AI) return;
 
         await delay(1000);
         this.game.dice = 0;

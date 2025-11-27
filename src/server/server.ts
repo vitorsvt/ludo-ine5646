@@ -12,7 +12,7 @@ import cors from 'cors'
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const ORIGIN = process.env.APP_URL || `http://localhost:${PORT}`
+const ORIGIN = process.env.APP_URL || `http://localhost:5173`
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
