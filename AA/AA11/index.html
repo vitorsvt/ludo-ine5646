@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP/UDP</title>
+
+    <link rel="stylesheet" href="css/ws.css"></link>
+</head>
+
+<body>
+    <header>
+        <h1>Monitor de Mensagens TCP/UDP</h1>
+    </header>
+
+    <main class="container">
+        <div class="server-status">
+            <div class="status-indicator">
+                <span id="statusIcon" class="status-dot status-offline"></span>
+                <span id="serverStatus">Servidor offline</span>
+            </div>
+
+            <div class="server-controls">
+                <button id="startServer">Iniciar Servidor</button>
+                <button id="stopServer">Parar Servidor</button>
+                <button id="clearMessages">Limpar Mensagens</button>
+            </div>
+        </div>
+
+        <div class="connection-stats">
+            <section class="stat-card">
+                <h3>Mensagens TCP</h3>
+                <span id="tcpCount" class="count">0</span>
+            </section>
+            <section class="stat-card">
+                <h3>Mensagens UDP</h3>
+                <span id="udpCount" class="count">0</span>
+            </section>
+            <section class="stat-card">
+                <h3>Total de Mensagens</h3>
+                <span id="totalCount" class="count">0</span>
+            </section>
+        </div>
+
+        <div class="messages-container">
+            <div class="message-tabs">
+                <span id="allMessages" class="tab active">Todas</span>
+                <span id="tcpMessages" class="tab">TCP</span>
+                <span id="udpMessages" class="tab">UDP</span>
+            </div>
+            <div id="messageList" class="message-list">
+                <p id="noMessages" class="no-messages">Nenhuma mensagem recebida ainda. Conecte clientes TCP/UDP para receber mensagens</p>
+            </div>
+        </div>
+
+        <span id="debugInfo" class="debug-info"></span>
+        <span id="debugToggle" class="debug-toggle">Exibir informações de depuração</span>
+    </main>
+
+    <footer>
+        Servidor Combinado TCP/UDP com WebSocket - Eduardo Godinho Silveira e  Vitor Silvestri
+    </footer>
+
+    <script src="js/ws.js"></script>
+</body>
+
+</html>
