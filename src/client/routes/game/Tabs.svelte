@@ -3,6 +3,7 @@
     import Players from "./Queue.svelte";
     import { userStore } from "$lib/Auth.svelte.ts";
     import Options from "./Capture.svelte";
+    import Ranking from "./Ranking.svelte";
 
     interface Tab {
         label: string;
@@ -22,6 +23,10 @@
             label: "Gravação",
             component: Options,
         },
+        {
+            label: "Ranking",
+            component: Ranking
+        }
     ];
 
     let activeTabValue = 0;
@@ -33,9 +38,8 @@
     <nav>
         <span>LUDO</span>
         <ul>
-            <li><a href="/profile">{$userStore}</a></li>
-            <li><a href="/ranking">Ranking</a></li>
-            <li><a href="/">Início</a></li>
+            <li>{$userStore}</li>
+            <li><a href="/">Página inicial</a></li>
         </ul>
     </nav>
 

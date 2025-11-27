@@ -87,10 +87,10 @@
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${$tokenStore}`,
-            },
+            } as any,
         })) as any;
 
-        const data = await response.json() as User
+        const data = (await response.json()) as User;
 
         videos = data.videos;
     }
@@ -115,11 +115,17 @@
         {/if}
     {/if}
 
-    {#each videos as video}
-        <ul>
+    <h2>Gravações</h2>
+
+    <ul>
+    {#if videos.length > 0}
+        {#each videos as video}
             <li><a href={video.location}>Partida {video.matchId}</a></li>
-        </ul>
-    {/each}
+        {/each}
+    {:else}
+        <li>Nenhum vídeo salvo ainda...</li>
+    {/if}
+    </ul>
 </section>
 
 <style>
@@ -132,5 +138,6 @@
 
     button {
         background-color: lightcoral;
+        padding: 0.5rem;
     }
 </style>

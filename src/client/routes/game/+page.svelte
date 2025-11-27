@@ -12,7 +12,7 @@
         setResync,
     } from "$lib/Game.svelte.ts";
     import Tabs from "./Tabs.svelte";
-    import { tokenStore, userStore } from "$lib/Auth.svelte.ts";
+    import { clearAuth, tokenStore, userStore } from "$lib/Auth.svelte.ts";
     import { goto } from "$app/navigation";
     import { GameState } from "../../../common/models/game.ts";
     import Webcam from "./Webcam.svelte";

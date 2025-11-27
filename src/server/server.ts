@@ -7,21 +7,34 @@ import type { JwtPayload } from '../common/models/model.ts';
 import { createUser, getLatestMatchId, getUserByName, getUsers, loginUser } from './database.ts';
 import { Manager } from './manager.ts';
 import { PeerServer } from 'peer';
+import cors from 'cors'
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const ORIGIN = process.env.APP_URL || `http://localhost:${PORT}`
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || origin === ORIGIN) {
+            callback(null, true)
+        } else {
+            callback(new Error('CORS blocked...'))
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 interface AuthenticatedRequest extends Request {
     user?: JwtPayload;
 }
 
-function authMiddleware(
+async function authMiddleware(
     req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
@@ -35,7 +48,15 @@ function authMiddleware(
 
     try {
         const decoded = jwt.verify(token, "INE5646") as JwtPayload;
-        req.user = decoded
+
+        const user = await getUserByName(decoded.username)
+
+        if (user != null) {
+            req.user = decoded
+        } else {
+            res.status(401).json({ message: "Unauthorized" })
+        }
+
     } catch (err) {
         return res.status(401).json({ message: "Unauthorized" })
     }
