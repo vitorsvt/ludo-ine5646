@@ -298,11 +298,13 @@ class Game {
     dice = 0;
     players: Player[];
     currentPlayer: Player | undefined;
+    winners: Player[];
 
     constructor() {
         this.id = Game.idCounter++
         this.board = new Board();
         this.players = [];
+        this.winners = [];
     }
 
     addPlayer(username: string, controller: PlayerController) {
@@ -338,6 +340,7 @@ class Game {
 
                 if (piecesInEnd.length === 4) {
                     player.finished = true;
+                    this.winners.push(player)
                 }
             }
 
@@ -451,6 +454,7 @@ class Game {
         this.players = [];
         this.dice = 0;
         this.currentPlayer = undefined;
+        this.winners = []
         this.board.reset();
     }
 

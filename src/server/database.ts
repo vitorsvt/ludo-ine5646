@@ -38,6 +38,16 @@ export async function saveVideo(username: string, matchId: number, location: str
     return result
 }
 
+export async function incrementPoints(username: string, increment: number) {
+    const db = await getDatabase()
+
+    const result = await db.collection<User>('users').updateOne({ username }, {
+        $inc: {
+            score: increment
+        }
+    })
+}
+
 export async function getLatestMatchId() {
     const db = await getDatabase()
     const match = await db.collection<Match>('matches')

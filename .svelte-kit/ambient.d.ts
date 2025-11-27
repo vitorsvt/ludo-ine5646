@@ -50,7 +50,6 @@ declare module '$env/static/private' {
 	export const WSL_INTEROP: string;
 	export const npm_package_version: string;
 	export const WAYLAND_DISPLAY: string;
-	export const FORCE_COLOR: string;
 	export const GIT_ASKPASS: string;
 	export const INIT_CWD: string;
 	export const npm_lifecycle_script: string;
@@ -69,8 +68,8 @@ declare module '$env/static/private' {
 	export const npm_execpath: string;
 	export const XDG_RUNTIME_DIR: string;
 	export const DEBUGINFOD_URLS: string;
-	export const npm_package_json: string;
 	export const WSLENV: string;
+	export const npm_package_json: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const npm_config_noproxy: string;
 	export const PATH: string;
@@ -136,7 +135,6 @@ declare module '$env/dynamic/private' {
 		WSL_INTEROP: string;
 		npm_package_version: string;
 		WAYLAND_DISPLAY: string;
-		FORCE_COLOR: string;
 		GIT_ASKPASS: string;
 		INIT_CWD: string;
 		npm_lifecycle_script: string;
@@ -155,8 +153,8 @@ declare module '$env/dynamic/private' {
 		npm_execpath: string;
 		XDG_RUNTIME_DIR: string;
 		DEBUGINFOD_URLS: string;
-		npm_package_json: string;
 		WSLENV: string;
+		npm_package_json: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		npm_config_noproxy: string;
 		PATH: string;

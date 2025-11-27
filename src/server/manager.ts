@@ -5,7 +5,7 @@ import { CommandType, MessageType, type Chat, type ChoosePiece, type Command, ty
 import type { JwtPayload } from "../common/models/model.ts";
 import path from 'path';
 import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
-import { saveVideo } from './database.ts';
+import { incrementPoints, saveVideo } from './database.ts';
 import { thickness } from 'three/tsl';
 
 /**
@@ -399,6 +399,16 @@ class Manager {
                     }
                 }
             })
+
+            let multiplier = 1
+            
+            for (const winner of this.game.winners) {
+                if (winner.controller === PlayerController.HUMAN) {
+                    await incrementPoints(winner.username, multiplier * 100)
+                    multiplier /= 2
+                }
+            }
+
             this.game.reset()
             this.broadcast(this.createFullSyncMessage())
 

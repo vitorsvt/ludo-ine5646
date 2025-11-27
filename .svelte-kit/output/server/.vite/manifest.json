@@ -1,0 +1,221 @@
+{
+  ".svelte-kit/generated/server/internal.js": {
+    "file": "internal.js",
+    "name": "internal",
+    "src": ".svelte-kit/generated/server/internal.js",
+    "isEntry": true,
+    "imports": [
+      "_internal.js",
+      "_environment.js"
+    ]
+  },
+  "_Auth.svelte.js": {
+    "file": "chunks/Auth.svelte.js",
+    "name": "Auth.svelte",
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "_attributes.js": {
+    "file": "chunks/attributes.js",
+    "name": "attributes",
+    "imports": [
+      "_utils2.js"
+    ]
+  },
+  "_context.js": {
+    "file": "chunks/context.js",
+    "name": "context"
+  },
+  "_environment.js": {
+    "file": "chunks/environment.js",
+    "name": "environment"
+  },
+  "_exports.js": {
+    "file": "chunks/exports.js",
+    "name": "exports"
+  },
+  "_false.js": {
+    "file": "chunks/false.js",
+    "name": "false"
+  },
+  "_index.js": {
+    "file": "chunks/index.js",
+    "name": "index",
+    "imports": [
+      "_utils2.js"
+    ]
+  },
+  "_index2.js": {
+    "file": "chunks/index2.js",
+    "name": "index",
+    "imports": [
+      "_utils2.js",
+      "_attributes.js",
+      "_context.js"
+    ]
+  },
+  "_internal.js": {
+    "file": "chunks/internal.js",
+    "name": "internal",
+    "imports": [
+      "_utils2.js",
+      "_index2.js",
+      "_context.js",
+      "_environment.js"
+    ]
+  },
+  "_shared.js": {
+    "file": "chunks/shared.js",
+    "name": "shared",
+    "imports": [
+      "_utils.js"
+    ]
+  },
+  "_state.svelte.js": {
+    "file": "chunks/state.svelte.js",
+    "name": "state.svelte",
+    "imports": [
+      "_utils2.js"
+    ]
+  },
+  "_utils.js": {
+    "file": "chunks/utils.js",
+    "name": "utils"
+  },
+  "_utils2.js": {
+    "file": "chunks/utils2.js",
+    "name": "utils",
+    "imports": [
+      "_false.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/app/server/remote/index.js": {
+    "file": "remote-entry.js",
+    "name": "remote-entry",
+    "src": "node_modules/@sveltejs/kit/src/runtime/app/server/remote/index.js",
+    "isEntry": true,
+    "imports": [
+      "_shared.js",
+      "_false.js",
+      "_environment.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "name": "entries/fallbacks/error.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/svelte-5/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_utils2.js",
+      "_state.svelte.js",
+      "_exports.js",
+      "_utils.js",
+      "_index.js",
+      "_context.js"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+    "file": "index.js",
+    "name": "index",
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "isEntry": true,
+    "imports": [
+      "_false.js",
+      "_environment.js",
+      "_shared.js",
+      "_exports.js",
+      "_utils.js",
+      "_index.js",
+      "_internal.js"
+    ]
+  },
+  "src/client/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "name": "entries/pages/_layout.svelte",
+    "src": "src/client/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout.DYM-90vj.css"
+    ]
+  },
+  "src/client/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "name": "entries/pages/_page.svelte",
+    "src": "src/client/routes/+page.svelte",
+    "isEntry": true,
+    "css": [
+      "_app/immutable/assets/_page.DxfQOB3i.css"
+    ]
+  },
+  "src/client/routes/game/+page.svelte": {
+    "file": "entries/pages/game/_page.svelte.js",
+    "name": "entries/pages/game/_page.svelte",
+    "src": "src/client/routes/game/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_Auth.svelte.js",
+      "_exports.js",
+      "_utils.js",
+      "_utils2.js",
+      "_state.svelte.js",
+      "_attributes.js",
+      "_index.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BO0y-H52.css"
+    ]
+  },
+  "src/client/routes/login/+page.svelte": {
+    "file": "entries/pages/login/_page.svelte.js",
+    "name": "entries/pages/login/_page.svelte",
+    "src": "src/client/routes/login/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_attributes.js",
+      "_exports.js",
+      "_utils.js",
+      "_state.svelte.js",
+      "_Auth.svelte.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.ChAyEy8C.css"
+    ]
+  },
+  "src/client/routes/register/+page.server.ts": {
+    "file": "entries/pages/register/_page.server.ts.js",
+    "name": "entries/pages/register/_page.server.ts",
+    "src": "src/client/routes/register/+page.server.ts",
+    "isEntry": true
+  },
+  "src/client/routes/register/+page.svelte": {
+    "file": "entries/pages/register/_page.svelte.js",
+    "name": "entries/pages/register/_page.svelte",
+    "src": "src/client/routes/register/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js",
+      "_exports.js",
+      "_utils.js",
+      "_attributes.js",
+      "_state.svelte.js",
+      "_utils2.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.B64tVDq-.css"
+    ]
+  },
+  "src/client/routes/tree/+page.svelte": {
+    "file": "entries/pages/tree/_page.svelte.js",
+    "name": "entries/pages/tree/_page.svelte",
+    "src": "src/client/routes/tree/+page.svelte",
+    "isEntry": true,
+    "css": [
+      "_app/immutable/assets/_page.D7QQD6OD.css"
+    ]
+  }
+}
