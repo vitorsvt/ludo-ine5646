@@ -51,7 +51,8 @@ export let players = $state({
         return this.active.filter(p => p.controller === PlayerController.HUMAN)
     },
 
-    isPlaying(player: string) {
+    isPlaying(player: string | null): boolean {
+        if (player === null) return false
         return this.humans().map(p => p.username).includes(player)
     }
 })

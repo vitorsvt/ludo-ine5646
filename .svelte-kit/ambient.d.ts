@@ -35,7 +35,6 @@ declare module '$env/static/private' {
 	export const TERM_PROGRAM_VERSION: string;
 	export const WSL_DISTRO_NAME: string;
 	export const NODE: string;
-	export const NODE_OPTIONS: string;
 	export const COLOR: string;
 	export const npm_config_local_prefix: string;
 	export const npm_config_globalconfig: string;
@@ -122,7 +121,6 @@ declare module '$env/dynamic/private' {
 		TERM_PROGRAM_VERSION: string;
 		WSL_DISTRO_NAME: string;
 		NODE: string;
-		NODE_OPTIONS: string;
 		COLOR: string;
 		npm_config_local_prefix: string;
 		npm_config_globalconfig: string;

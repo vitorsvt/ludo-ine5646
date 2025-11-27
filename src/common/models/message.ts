@@ -1,4 +1,4 @@
-import type { Color, GameState, PieceState, Player, PlayerController } from "./game.ts"
+import type { GameState, PieceState, Player } from "./game.ts"
 
 /**
  * Types of messages in the communication
@@ -15,6 +15,8 @@ export const enum MessageType {
     FILL_BOTS = "fill_bots",
     VIDEO_READY = "video_ready",
     VIDEO_SYNC = "video_sync",
+    START_RECORDING = "start_recording",
+    STOP_RECORDING = "stop_recording",
 }
 
 /**

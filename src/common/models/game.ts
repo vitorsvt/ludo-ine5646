@@ -290,6 +290,9 @@ const enum GameState {
 }
 
 class Game {
+    static idCounter = 1;
+
+    id: number
     state: GameState = GameState.LOBBY
     board: Board;
     dice = 0;
@@ -297,6 +300,7 @@ class Game {
     currentPlayer: Player | undefined;
 
     constructor() {
+        this.id = Game.idCounter++
         this.board = new Board();
         this.players = [];
     }
@@ -441,6 +445,7 @@ class Game {
     }
 
     reset() {
+        this.id = Game.idCounter++;
         this.players = [];
         this.dice = 0;
         this.currentPlayer = undefined;

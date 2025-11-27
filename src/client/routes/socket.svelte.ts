@@ -114,7 +114,7 @@ function connect() {
     }
 }
 
-function send(data: string) {
+function send(data: string | ArrayBufferLike) {
     if (socket === null) {
         throw Error("Socket não está conectado")
     }

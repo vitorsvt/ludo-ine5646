@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { WebSocket, WebSocketServer } from "ws";
+import { WebSocket, WebSocketServer, type RawData } from "ws";
 import { Game, GameState, PlayerController } from "../common/models/game.ts";
 import { CommandType, MessageType, type Chat, type ChoosePiece, type Command, type FullSync, type Message } from "../common/models/message.ts";
 import type { JwtPayload } from "../common/models/model.ts";
+import path from 'path';
+import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
 
 /**
  * Associar o nome de usuário ao socket
@@ -32,6 +34,7 @@ class Manager {
     matchChat: Chat[] = [];
     queue: string[] = [];
     spectators: string[] = [];
+    recordings = new Map<string, ChildProcessWithoutNullStreams>();
 
     constructor({ port }: ManagerInit = { port: 3001 }) {
         this.game = new Game();
@@ -48,6 +51,8 @@ class Manager {
                     if (storedSocket === ws) {
                         this.sockets.delete(ws.username)
                     }
+
+                    this.handleStopRecording(ws.username)
                 }
 
                 if (ws.peerId) {
@@ -67,7 +72,12 @@ class Manager {
             })
 
             ws.on('message', async (data, isBinary) => {
-                const messageString = isBinary ? data : data.toString();
+                if (isBinary && ws.username !== undefined) {
+                    this.handleRecordingPacket(ws.username, data)
+                    return
+                }
+
+                const messageString = data.toString();
                 let message: Message;
 
                 try {
@@ -122,19 +132,93 @@ class Manager {
     private async handleMessage(ws: GameSocket, message: Message, username: string) {
         switch (message.type) {
             case MessageType.GREET:
-                this.handleGreet(username);
-                break;
+                this.handleGreet(username)
+                break
             case MessageType.CHAT:
-                this.handleChat(message.content as Chat, username);
-                break;
+                this.handleChat(message.content as Chat, username)
+                break
             case MessageType.FILL_BOTS:
-                this.handleFillBots(username);
-                break;
+                this.handleFillBots(username)
+                break
             case MessageType.COMMAND:
-                await this.handleCommand(message.content as Command, username);
-                break;
+                await this.handleCommand(message.content as Command, username)
+                break
             case MessageType.VIDEO_READY:
                 this.handleConnectVideo(ws, message.content as string, username)
+                break;
+            case MessageType.START_RECORDING:
+                this.handleStartRecording(username)
+                break
+            case MessageType.STOP_RECORDING:
+                this.handleStopRecording(username)
+                break
+        }
+    }
+
+    private handleStartRecording(username: string) {
+        // Iniciar FFMPEG
+        const filePath = path.join('uploads', `${username}_${this.game.id}_${Date.now()}.webm`)
+        const ffmpeg = spawn('ffmpeg', [
+            '-y',
+            '-f', 'webm',
+            '-i', 'pipe:0',
+            '-c', 'copy',
+            // Evitar problema com timestamp dos quadros
+            '-fflags', '+genpts',
+            '-avoid_negative_ts', 'make_zero',
+            filePath
+        ]);
+        console.log(`[server] iniciando gravação em ${filePath}`)
+
+        // Gerenciar erros no FFMPEG
+        ffmpeg.stderr.on('data', (data) => {
+            console.log(`[ffmpeg:${username}] ${data}`);
+        });
+        ffmpeg.on('close', (code) => {
+            console.log(`[ffmpeg:${username}] ${code}`);
+            if (code !== 0) {
+                console.error(`[ffmpeg:${username}] ocorreu um erro`);
+            }
+        });
+        ffmpeg.on('error', (err) => {
+            console.error(`[ffmpeg ${username}] falha ao iniciar processo:`, err);
+        });
+
+        // Salva o processo da gravação no mapping
+        this.recordings.set(username, ffmpeg)
+    }
+
+    private handleStopRecording(username: string) {
+        const ffmpeg = this.recordings.get(username)
+        if (ffmpeg) {
+            ffmpeg.stdin.end()
+            console.log(`[server] gravação finalizada por ${username}`)
+            this.recordings.delete(username)
+        }
+    }
+
+    private handleRecordingPacket(username: string, data: RawData) {
+        const ffmpeg = this.recordings.get(username)
+        if (ffmpeg && ffmpeg.stdin.writable) {
+            const chunk = Buffer.from(data as any)
+
+            if (chunk.length < 100) {
+                console.warn("[server] PACOTE SUSPEITO, IGNORANDO...")
+                return
+            }
+
+            try {
+                ffmpeg.stdin.write(chunk, (err) => {
+                    if (err) {
+                        console.error(`[server] erro de escrita no pipe do ffmpeg (${username})`)
+                        this.handleStopRecording(username)
+                    }
+                })
+            } catch (error) {
+                console.error(`[server] erro ao escrever chunk (${username})`)
+            }
+        } else {
+            console.warn(`[server] tentativa de enviar pacote de vídeo a um processo fechado (${username})`)
         }
     }
 

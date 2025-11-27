@@ -27,22 +27,22 @@
         switch (getGameState()) {
             case GameState.LOBBY:
                 return {
-                    color: "white",
+                    color: "black",
                     message: `aguardando jogadores... (${players.queue.length}/4)`,
                 };
             case GameState.DICE:
                 return {
-                    color: currentPlayer?.color || 'white',
+                    color: currentPlayer?.color || 'black',
                     message: `[${currentPlayer?.username}] rolar o dado`,
                 };
             case GameState.PIECE:
                 return {
-                    color: currentPlayer?.color || 'white',
+                    color: currentPlayer?.color || 'black',
                     message: `[${currentPlayer?.username}] selecione uma peça`,
                 };
             case GameState.END:
                 return {
-                    color: "white",
+                    color: "black",
                     message: `fim de jogo`,
                 };
         }
