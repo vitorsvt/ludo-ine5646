@@ -79,6 +79,7 @@ declare module '$env/static/private' {
 	export const HOSTTYPE: string;
 	export const PULSE_SERVER: string;
 	export const npm_node_execpath: string;
+	export const OLDPWD: string;
 	export const TERM_PROGRAM: string;
 	export const VSCODE_IPC_HOOK_CLI: string;
 	export const NODE_ENV: string;
@@ -164,6 +165,7 @@ declare module '$env/dynamic/private' {
 		HOSTTYPE: string;
 		PULSE_SERVER: string;
 		npm_node_execpath: string;
+		OLDPWD: string;
 		TERM_PROGRAM: string;
 		VSCODE_IPC_HOOK_CLI: string;
 		NODE_ENV: string;

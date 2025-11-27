@@ -6,7 +6,7 @@ import type { JwtPayload } from "../common/models/model.ts";
 import path from 'path';
 import { spawn, type ChildProcessWithoutNullStreams } from 'child_process';
 import { incrementPoints, saveVideo } from './database.ts';
-import { thickness } from 'three/tsl';
+import fs from 'fs'
 
 /**
  * Associar o nome de usuário ao socket
@@ -162,6 +162,11 @@ class Manager {
     }
 
     private handleStartRecording(username: string) {
+        // Criar diretório se não existe
+        if (!fs.existsSync('public/uploads')) {
+            fs.mkdirSync('public/uploads')
+        }
+
         // Iniciar FFMPEG
         const filePath = path.join('uploads', `${username}_${this.game.id}_${Date.now()}.webm`)
         const ffmpeg = spawn('ffmpeg', [
@@ -172,7 +177,7 @@ class Manager {
             // Evitar problema com timestamp dos quadros
             '-fflags', '+genpts',
             '-avoid_negative_ts', 'make_zero',
-            filePath
+            path.join('public', filePath)
         ]);
         console.log(`[server] iniciando gravação em ${filePath}`)
 
