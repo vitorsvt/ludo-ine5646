@@ -381,8 +381,6 @@ class Game {
             this.dice = Math.ceil(Math.random() * 5);
         }
 
-        this.dice += 3
-
         this.state = GameState.PIECE;
     }
 
