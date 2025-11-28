@@ -6,7 +6,7 @@
     "scripts": {
         "build:server": "tsup src/server/server.ts --format esm --out-dir dist --clean --no-dts",
         "build:client": "vite build",
-        "build": " npm run build:server && npm run build:client && cp package.json dist/package.json",
+        "build": " npm run build:server && npm run build:client && cp package.json dist && cp -r AA slides dist/public",
         "start": "node dist/server.js",
         "dev:server": "tsx watch src/server/server.ts",
         "dev:client": "vite",

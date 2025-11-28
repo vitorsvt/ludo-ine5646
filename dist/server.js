@@ -1068,12 +1068,8 @@ import cors from "cors";
 var app = express();
 var PORT = process.env.PORT || 3e3;
 var ALLOWED_ORIGINS = [
-  "http://localhost:3000",
-  "http://localhost:5173",
   "http://aa.eduardo.godinho.vms.ufsc.br",
-  // SEU DOMÍNIO AQUI
   "https://aa.eduardo.godinho.vms.ufsc.br"
-  // Caso use HTTPS no futuro
 ];
 app.use(cors({
   origin: (origin, callback) => {
