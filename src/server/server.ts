@@ -13,10 +13,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 const ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'http://aa.eduardo.godinho.vms.ufsc.br', // SEU DOMÍNIO AQUI
-    'https://aa.eduardo.godinho.vms.ufsc.br' // Caso use HTTPS no futuro
+    'http://aa.eduardo.godinho.vms.ufsc.br',
+    'https://aa.eduardo.godinho.vms.ufsc.br'
 ];
 
 app.use(cors({
@@ -31,6 +29,8 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);

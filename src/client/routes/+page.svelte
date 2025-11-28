@@ -99,7 +99,7 @@
             </p>
 
             <a
-                href="https://github.com/vitorsvt/ludo"
+                href="https://github.com/vitorsvt/ludo-ine5646"
                 rel="noopener"
                 target="_blank">Clique aqui para ir ao repositório do projeto</a
             >

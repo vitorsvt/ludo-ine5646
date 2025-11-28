@@ -20,12 +20,13 @@ export const enum MessageType {
 }
 
 /**
- * 
+ * Message between client and server, through the socket
  */
 export interface Message {
     type: MessageType,
     token?: string,
-    content?: Chat | Player | PieceSync | StateSync | FullSync | Command | ChoosePiece | string | string[]
+    content?: Chat | Player | PieceSync | StateSync |
+        FullSync | Command | ChoosePiece | string | string[]
 }
 
 export interface Chat {

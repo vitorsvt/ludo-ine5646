@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/white.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+	<style>
+		.h {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 2rem;
+		}
+
+		section {
+			font-size: 2rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>Projeto Web Ludo</h1>
+				<ul>
+					<li>Eduardo Godinho Silveira</li>
+					<li>Vitor Silvestri</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Introdução</h2>
+				<p>Desenvolvimento de uma aplicação web multiplayer do jogo Ludo</p>
+				<div>
+					<img src="images/ludo.png" width="300">
+				</div>
+			</section>
+
+			<section>
+				<h2>Motivação</h2>
+				<ul>
+					<li>
+						<p>
+							O estudo Research on Online Games and Social Interaction (2024) investiga como os jogos
+							online se tornaram um dos principais espaços de comunicação e convivência na sociedade
+							contemporânea
+						</p>
+					</li>
+					<li>
+						<p>
+							Para o nosso projeto de Ludo online, essas conclusões reforçam a importância de
+							funcionalidades de interação integradas ao jogo, como o chat global e local, já que jogos
+							mesmo simples podem se tornar espaços de conexão social.
+						</p>
+					</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Fundamentação teórica</h2>
+				<ul>
+					<li>Arquitetura Cliente-Servidor</li>
+					<li>Protocolos de Comunicação: HTTP, HTTPS e TCP</li>
+					<li>Arquitetura REST e APIs Web</li>
+					<li>Comunicação em Tempo Real: WebSocket e WebRTC</li>
+					<li>NoSQL e Modelagem Não Relacional</li>
+					<li>Padrão Arquitetural: Model-View-Controller (MVC)</li>
+					<li>Conceitos de Autenticação Baseada em Token</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Ferramentas utilizadas</h2>
+				<ul>
+					<li>TypeScript</li>
+					<li>Express</li>
+					<li>Svelte</li>
+					<li>MongoDB</li>
+					<li>JSON-Web-Token</li>
+					<li>Vite</li>
+					<li>Three.JS</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Estrutura geral da aplicação</h2>
+				<div class="h">
+					<img src="images/1.png">
+					<ul>
+						<li>O código-fonte da aplicações concentra-se em 3 diretórios distintos:</li>
+						<ul>
+							<li>client: templates, estilos, renderização do jogo e
+								interações com API Restful, WebSockets e WebRTC</li>
+							<li>server: disponibilidade do FrontEnd à Web, interações com MongoDB e gerenciamento do
+								estado do jogo e dos sockets de clientes</li>
+							<li>common: estruturas comuns do modelo de negócio e da comunicação da aplicação</li>
+						</ul>
+					</ul>
+				</div>
+			</section>
+
+			<section>
+				<h2>Segurança da aplicação</h2>
+				<div class="h">
+					<div>
+						<img src="images/cors.png">
+					</div>
+					<ul>
+						<li>CORS (Cross-Origin Resource Sharing)</li>
+						<li>XSS</li>
+						<li>Injeção de código</li>
+					</ul>
+				</div>
+			</section>
+
+			<section>
+				<img src="images/dice.png" alt="">
+			</section>
+
+			<section>
+				<img src="images/validpiece.png" alt="">
+			</section>
+
+			<section>
+				<img src="images/piecemove.png" alt="">
+			</section>
+
+			<section>
+				<div class="h">
+					<img src="images/messagetype.png" alt="">
+					<img src="images/message.png" alt="">
+				</div>
+			</section>
+
+			<section>
+				<img src="images/user.png" alt="">
+			</section>
+
+			<section>
+				<img src="images/createUser.png" alt="">
+			</section>
+
+			<section>
+				<img src="images/inactivty.png" alt="">
+			</section>
+			
+			<section>
+				<h1>Screenshots do jogo</h1>
+			</section>
+
+			<section>
+				<img src="images/gameplay.png">
+			</section>
+
+			<section>
+				<img src="images/gameplay2.png">
+			</section>
+
+			<section>
+				<img src="images/chat.png">
+			</section>
+
+			<section>
+				<img src="images/record.png">
+			</section>
+
+			<section>
+				<img src="images/ranking.png">
+			</section>
+
+			<section>
+				<img src="images/login.png">
+			</section>
+
+			<section>
+				<img src="images/register.png">
+			</section>
+		</div>
+	</div>
+
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		Reveal.initialize({
+			hash: true,
+
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+		});
+	</script>
+</body>
+
+</html>
