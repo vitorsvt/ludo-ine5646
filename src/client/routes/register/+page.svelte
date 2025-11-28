@@ -1,8 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { PageProps } from "./$types.ts";
-    import type { Country } from "./+page.server.ts";
-    import { goto } from '$app/navigation';
+    import { goto } from "$app/navigation";
+
+    interface Country {
+        iso2: string;
+        emoji: string;
+        name: string;
+    }
 
     interface State {
         code: string;
@@ -10,10 +14,8 @@
     }
 
     interface City {
-        name: string
+        name: string;
     }
-
-    let { data }: PageProps = $props();
 
     let countries = $state<Country[]>([]);
     let selectedCountry = $state("BR");
@@ -24,56 +26,65 @@
     let cities = $state<City[]>([]);
     let selectedCity = $state("Florianópolis");
 
+    async function updateCountries() {
+        countries = [];
+
+        const response = await fetch("/api/countries");
+        countries = await response.json();
+    }
+
     async function updateStates() {
-        states = []
+        states = [];
 
         const response = await fetch(`/api/states?country=${selectedCountry}`);
         const stateList = await response.json();
 
         states = stateList.map((state: any) => ({
             code: state.iso2,
-            name: state.name
-        }))
+            name: state.name,
+        }));
     }
 
     async function updateCities() {
-        cities = []
+        cities = [];
 
-        const response = await fetch(`/api/cities?country=${selectedCountry}&state=${selectedState}`);
+        const response = await fetch(
+            `/api/cities?country=${selectedCountry}&state=${selectedState}`,
+        );
         cities = await response.json();
     }
 
     onMount(async () => {
-        countries = data.countries;
+        await updateCountries();
         await updateStates();
         await updateCities();
     });
 
     let credentials = $state({
-        username: '',
-        password: '',
-        repeatedPassword: ''
-    })
+        username: "",
+        password: "",
+        repeatedPassword: "",
+    });
 
     async function register(event: Event) {
-        event.preventDefault()
+        event.preventDefault();
 
         const response = await fetch("/api/register", {
             method: "POST",
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 country: selectedCountry,
                 state: selectedState,
                 city: selectedCity,
-                ...credentials
+                ...credentials,
             }),
         });
 
         if (response.ok) {
-            goto('/login')
+            goto("/login");
         }
     }
 </script>
@@ -84,7 +95,11 @@
 
         <label>
             Nome de usuário:
-            <input name="username" bind:value={credentials.username} type="text" />
+            <input
+                name="username"
+                bind:value={credentials.username}
+                type="text"
+            />
         </label>
 
         <label>
@@ -129,12 +144,20 @@
 
         <label>
             Senha:
-            <input name="password" bind:value={credentials.password} type="password" />
+            <input
+                name="password"
+                bind:value={credentials.password}
+                type="password"
+            />
         </label>
 
         <label>
             Repetir senha:
-            <input name="repeatedPassword" bind:value={credentials.repeatedPassword} type="password" />
+            <input
+                name="repeatedPassword"
+                bind:value={credentials.repeatedPassword}
+                type="password"
+            />
         </label>
 
         <button type="submit">Cadastrar</button>

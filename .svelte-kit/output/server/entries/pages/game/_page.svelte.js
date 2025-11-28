@@ -486,7 +486,12 @@ class VideoManager {
       return;
     }
     const peerLib = await import("peerjs");
-    this.peer = new peerLib.Peer("", { host: "localhost", port: 9e3, path: "/ludo", secure: false });
+    this.peer = new peerLib.Peer("", {
+      host: window.location.hostname,
+      port: window.location.port ? Number(window.location.port) : window.location.protocol === "https:" ? 443 : 80,
+      path: "/webrtc",
+      secure: window.location.protocol === "https:"
+    });
     this.peer.on("open", (myPeerId) => {
       console.log("[video] Conectado com id:", myPeerId);
       send(JSON.stringify({

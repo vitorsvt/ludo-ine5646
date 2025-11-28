@@ -186,12 +186,6 @@
       "_app/immutable/assets/_page.ChAyEy8C.css"
     ]
   },
-  "src/client/routes/register/+page.server.ts": {
-    "file": "entries/pages/register/_page.server.ts.js",
-    "name": "entries/pages/register/_page.server.ts",
-    "src": "src/client/routes/register/+page.server.ts",
-    "isEntry": true
-  },
   "src/client/routes/register/+page.svelte": {
     "file": "entries/pages/register/_page.svelte.js",
     "name": "entries/pages/register/_page.svelte",

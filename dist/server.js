@@ -1018,7 +1018,7 @@ var Manager = class {
   broadcastPlayers(message) {
     const payload = JSON.stringify(message);
     const players = this.game.players.filter((p) => p.controller !== "ai" /* AI */).map((p) => p.username);
-    const clients = this.sockets.keys().filter((user) => players.includes(user));
+    const clients = [...this.sockets.keys()].filter((user) => players.includes(user));
     for (const client2 of clients) {
       const socket = this.sockets.get(client2);
       if (socket?.readyState === WebSocket.OPEN) {
@@ -1067,12 +1067,20 @@ import { PeerServer } from "peer";
 import cors from "cors";
 var app = express();
 var PORT = process.env.PORT || 3e3;
-var ORIGIN = process.env.APP_URL || `http://localhost:3000`;
+var ALLOWED_ORIGINS = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://aa.eduardo.godinho.vms.ufsc.br",
+  // SEU DOMÍNIO AQUI
+  "https://aa.eduardo.godinho.vms.ufsc.br"
+  // Caso use HTTPS no futuro
+];
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || origin === ORIGIN) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
       callback(null, true);
     } else {
+      console.log(`[CORS Blocked] Origin: ${origin}`);
       callback(new Error("CORS blocked..."));
     }
   },
@@ -1080,6 +1088,10 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
+var __filename = fileURLToPath(import.meta.url);
+var dirname = path2.dirname(__filename);
+var publicPath = path2.join(dirname, "public");
+app.use(express.static(publicPath));
 async function authMiddleware(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -1145,11 +1157,10 @@ app.get("/api/user", authMiddleware, async (req, res) => {
     res.status(401).json({ message: "Unauthorized" });
   }
 });
-var __filename = fileURLToPath(import.meta.url);
-var dirname = path2.dirname(__filename);
-var publicPath = path2.join(dirname, "public");
-app.use(express.static(publicPath));
 app.get(/(.*)/, (req, res) => {
+  if (req.url.includes(".")) {
+    return res.status(404).send("Arquivo n\xE3o encontrado");
+  }
   res.sendFile(path2.join(publicPath, "index.html"));
 });
 app.listen(PORT, () => {
@@ -1159,7 +1170,7 @@ var matchId = await getLatestMatchId();
 new Manager({ nextId: matchId + 1, port: 3001 });
 var peerServer = PeerServer({
   port: 9e3,
-  path: "/ludo",
+  path: "/webrtc",
   allow_discovery: true
 });
 peerServer.on("connection", (client2) => {

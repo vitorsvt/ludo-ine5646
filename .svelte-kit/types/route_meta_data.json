@@ -2,8 +2,6 @@
 	"/": [],
 	"/game": [],
 	"/login": [],
-	"/register": [
-		"src/client/routes/register/+page.server.ts"
-	],
+	"/register": [],
 	"/tree": []
 }

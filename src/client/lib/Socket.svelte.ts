@@ -13,11 +13,10 @@ function connect() {
         socket.close()
     }
 
-    socket = new WebSocket("ws://localhost:3001");
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    socket = new WebSocket(`${protocol}://${window.location.host}/socket`);
 
     socket.onopen = () => {
-        console.log("Connected to ws://localhost:3001")
-
         if (socket === null) return;
 
         const token = get(tokenStore);

@@ -8,7 +8,6 @@ import "../../../chunks/state.svelte.js";
 import { U as escape_html } from "../../../chunks/utils2.js";
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
-    let { data } = $$props;
     let countries = [];
     let selectedCountry = "BR";
     let states = [];

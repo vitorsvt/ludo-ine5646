@@ -12,13 +12,19 @@ import cors from 'cors'
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const ORIGIN = process.env.APP_URL || `http://localhost:3000`
+const ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://aa.eduardo.godinho.vms.ufsc.br', // SEU DOMÍNIO AQUI
+    'https://aa.eduardo.godinho.vms.ufsc.br' // Caso use HTTPS no futuro
+];
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || origin === ORIGIN) {
+        if (!origin || ALLOWED_ORIGINS.includes(origin)) {
             callback(null, true)
         } else {
+            console.log(`[CORS Blocked] Origin: ${origin}`);
             callback(new Error('CORS blocked...'))
         }
     },
@@ -26,6 +32,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(__filename);
+const publicPath = path.join(dirname, 'public');
+app.use(express.static(publicPath));
 
 interface AuthenticatedRequest extends Request {
     user?: JwtPayload;
@@ -114,12 +125,11 @@ app.get('/api/user', authMiddleware, async (req: AuthenticatedRequest, res: Resp
     }
 })
 
-const __filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(__filename);
-const publicPath = path.join(dirname, 'public');
-app.use(express.static(publicPath));
-
 app.get(/(.*)/, (req, res) => {
+    if (req.url.includes('.')) {
+        return res.status(404).send('Arquivo não encontrado');
+    }
+
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
@@ -133,7 +143,7 @@ new Manager({ nextId: matchId + 1, port: 3001 });
 
 const peerServer = PeerServer({
     port: 9000,
-    path: "/ludo",
+    path: "/webrtc",
     allow_discovery: true
 });
 

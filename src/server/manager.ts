@@ -600,7 +600,7 @@ class Manager {
     private broadcastPlayers(message: Message) {
         const payload = JSON.stringify(message)
         const players = this.game.players.filter(p => p.controller !== PlayerController.AI).map(p => p.username);
-        const clients = this.sockets.keys().filter(user => players.includes(user))
+        const clients = [...this.sockets.keys()].filter(user => players.includes(user))
 
         for (const client of clients) {
             const socket = this.sockets.get(client);
